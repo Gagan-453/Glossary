@@ -154,6 +154,7 @@ class synonyms_and_antonyms:
         button.config(bg=bg)
 
     def open_meaning(self, qry):
+        self.root.destroy()
         vm.search_words(query=qry)
 
 if __name__ == '__main__':

@@ -70,7 +70,8 @@ class search_wikipedia(tk.Frame):
         return True
     
     def open_wiki_ref(self, q):
-        pass
+        self.root.destroy()
+        vm.search_words(query=q)
 
     def back_to_main(self):
         self.root.destroy()

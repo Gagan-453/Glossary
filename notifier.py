@@ -9,9 +9,7 @@ dictionary = PyDictionary()
 file = open('resources/time.txt', 'r')
 content = (file.read()).strip()
 
-if content == 'Never':
-    t = 0
-elif content == '5 minutes':
+if content == '5 minutes':
     t = 60*5
 elif content == '10 minutes':
     t = 60*10
@@ -23,6 +21,8 @@ elif content == '2 hours':
     t = 60*120
 elif content == '1 day':
     t = 60*60*24
+else:
+    t = 0
 
 while True:
     if t == 0:
@@ -40,9 +40,11 @@ while True:
         msg = word_meaning
         icon = 'resources/dictionary.ico'
 
-        notification.notify(title, message=msg, timeout=10)
+        notification.notify(title, message=msg, timeout=100)
 
-        time.sleep(t)
     except:
         pass
+    
+    time.sleep(t)
+
 

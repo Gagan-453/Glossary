@@ -71,7 +71,8 @@ class search_wikipedia(tk.Frame):
         return True
     
     def open_wiki_ref(self, q):
-        pass
+        self.root.destroy()
+        sa.synonyms_and_antonyms(query=q, mode=self.mode)
 
     def back_to_main(self):
         self.root.destroy()

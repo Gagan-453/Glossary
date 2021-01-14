@@ -7,6 +7,13 @@ import search_wiki as sw
 import synonyms_antonyms_search as sas
 import search_meanings as sm
 import notification_settings as ns
+import view_meaning as vm
+import random as r
+from threading import *
+
+def shuffle_words(root):
+    root.destroy()
+    main_window()
 
 class main_window:
     def __init__(self):
@@ -15,11 +22,13 @@ class main_window:
         self.root.iconbitmap('resources/dictionary.ico')
         self.root.resizable(0, 0)
 
+        self.dictionary = pd.PyDictionary()
+
         self.menu = Frame(self.root, width=170, height=600, bg='white')
         self.menu.propagate(0)
         self.menu.pack(side=LEFT)
 
-        self.main = Frame(self.root, width=600, height=600, bg='white')
+        self.main = Frame(self.root, width=500, height=600, bg='white')
         self.main.propagate(0)
         self.main.pack(side=LEFT)
 
@@ -59,7 +68,7 @@ class main_window:
             self.shuffle = Image.open('resources/shuffle.png') #pic
             self.shuffle = self.shuffle.resize((30, 30), Image.ANTIALIAS)
             self.shuffle = ImageTk.PhotoImage(self.shuffle)
-            self.shuffle_btn = Button(self.menu, image=self.shuffle, bg='white', fg='#440D64', compound=LEFT, font=('Arial', 14, 'bold'))
+            self.shuffle_btn = Button(self.menu, image=self.shuffle, bg='white', fg='#440D64', compound=LEFT, font=('Arial', 14, 'bold'), command=lambda: shuffle_words(self.root))
             self.shuffle_btn.place(x=10, y=260)
             self.shuffle_btn.bind('<Enter>', lambda eff: self.extend(widget=self.shuffle_btn, txt='  Shuffle'))
             self.shuffle_btn.bind('<Leave>', lambda eff: self.extend_back(widget=self.shuffle_btn))
@@ -85,6 +94,13 @@ class main_window:
             self.exit_btn.place(x=0, y=560)
         except:
             pass
+
+        self.heading = Label(self.main, text='Suggestions', bg='white', fg='red', font=('Courier', 17, 'bold underline'))
+        self.heading.pack()
+
+        self.t = Thread(target=self.suggestions)
+        self.t.start()
+
 
         self.root.mainloop()
 
@@ -119,6 +135,45 @@ class main_window:
     def open_notifications_settings(self):
         self.root.destroy()
         ns.notifications()
+
+    def suggestions(self):
+        for i in range(4):
+            self.words = list(english_words_set)
+            self.rand_word = r.choice(self.words)
+            try:
+                self.meaning = self.dictionary.meaning(self.rand_word)
+            except:
+                self.meaning = ''
+            
+            self.lbl = LabelFrame(self.main, text=self.rand_word, width=400, height=110, bd=3, bg='white', fg='dark blue', font=('Georgia', 15, 'bold'))
+            self.lbl.propagate(0)
+            self.lbl.pack(pady=10)
+
+            self.mean = Text(self.lbl, width=50, height=3, font=('Cambria', 13), wrap=WORD)
+            self.mean.pack()
+
+            if self.meaning == None:
+                self.mean.insert(END, 'No Meanings found...')
+                self.mean.config(fg='grey')
+            else:
+                self.vals = list(self.meaning.values())
+                self.content = '⭐ ' + self.vals[0][0]
+                try:
+                    self.add = '\n⭐ ' + self.vals[0][1]
+                    self.content+=self.add
+                except:
+                    pass
+
+                self.mean.insert(END, self.content)
+            self.mean.config(state=DISABLED)
+
+            self.more = Button(self.lbl, text='more..', bg='white', fg='blue', relief=FLAT, activebackground='white', activeforeground='red', cursor='hand2', font=('Calibri', 13))
+            self.more.pack(side=RIGHT)
+            self.more['command'] = lambda q=self.rand_word: self.open_word_meaning(query=q)
+
+    def open_word_meaning(self, query):
+        self.root.destroy()
+        vm.search_words(query=query)
 
 
 if __name__ == '__main__':

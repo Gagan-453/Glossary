@@ -1,3 +1,4 @@
+import install_requirements
 from tkinter import *
 from english_words import english_words_set
 import PyDictionary as pd

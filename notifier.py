@@ -1,4 +1,3 @@
-import os
 from english_words import *
 import random as r
 from PyDictionary import *
@@ -46,5 +45,4 @@ while True:
         pass
     
     time.sleep(t)
-
 

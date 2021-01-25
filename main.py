@@ -11,6 +11,10 @@ import notification_settings as ns
 import view_meaning as vm
 import random as r
 from threading import *
+import shutil
+import getpass
+import os
+
 
 def shuffle_words(root):
     root.destroy()
@@ -102,7 +106,6 @@ class main_window:
         self.t = Thread(target=self.suggestions)
         self.t.start()
 
-
         self.root.mainloop()
 
     def extend(self, widget, txt, width=None):
@@ -175,6 +178,10 @@ class main_window:
     def open_word_meaning(self, query):
         self.root.destroy()
         vm.search_words(query=query)
+
+    def run_in_bg(self):
+        # This can be included but not included
+        os.system(r'cmd /c "pyw notifier.py"')
 
 
 if __name__ == '__main__':

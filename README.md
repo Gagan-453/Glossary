@@ -4,4 +4,8 @@ This also allows you to search for synonyms and antonyms of any word..
 Suggestions of new words were given in the home page..
 You can get notified of meanings at every interval..
 You can change interval timing in notifications tab..
-All you need to do is just run the file named main.py......
+
+There are two applications in the folder ("Glossary" and "Glossary (no cmd)").
+If you want to receive notifications regarding vocabulary, you can open "Glossary", else you need to open "Glossary (no cmd)".
+
+Thanks...
